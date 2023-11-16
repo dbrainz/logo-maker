@@ -1,8 +1,9 @@
-const inquirer = require("inquirer")
+const inquirer = require("inquirer");
 const {Circle, Square, Triangle} = require('./lib/shapes');
-const {writeFile} = require("fs").promises
+const {writeFile} = require("fs").promises;
 var shape;
 
+// questions array for inquirer - used to get shape, shape color, initials, and text color
 const questions = [
     {
     type: "list",
@@ -22,29 +23,30 @@ const questions = [
     type: "input",
     name: "textColor",
     prompt: "Color of the text : "}
-]
+];
 
+// get logo parameters from user
 inquirer.prompt(questions)
     .then( answers => {
         switch(answers.shapeType) {
             case "Circle" : 
-                shape = new Circle(answers.shapeColor)
-                break
+                shape = new Circle(answers.shapeColor);
+                break;
             case "Square" :
-                shape = new Square(answers.shapeColor)
-                break
+                shape = new Square(answers.shapeColor);
+                break;
             case "Triangle" : 
-                shape = new Triangle(answers.shapeColor)
-                break
+                shape = new Triangle(answers.shapeColor);
+                break;
         } 
-        outputStr = `
+        let outputStr = `
             <svg version="1.1" width="300" height="200" xmlns="http://www.w3.org/2000/svg">
 
                 ${shape.render()}
 
-                <text x="150" y="${shape.yVal}" font-size="60" text-anchor="middle" fill="${answers.textColor}">${answers.initials}</text>
+                <text x="150" y="${shape.yVal}" font-size="60" text-anchor="middle" fill="${answers.textColor}">${answers.initials.substring(0,3)}</text>
 
-            </svg>`
-        writeFile(`./output/${answers.initials}-${answers.shapeType}-${answers.shapeColor}-${answers.textColor}.svg`, outputStr)
+            </svg>`;
+        writeFile(`./output/${answers.initials.substring(0,3)}-${answers.shapeType}-${answers.shapeColor}-${answers.textColor}.svg`, outputStr);
     })
 
